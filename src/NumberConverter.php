@@ -16,11 +16,12 @@ class NumberConverter implements Converter
     private $number;
 
     /**
-     * @var
+     * @var string
      */
     public $firstLne, $secondLine, $thirdLine;
 
     /**
+     * character map of numbers.
      * @var array
      */
     private $numberMap = [
@@ -82,6 +83,7 @@ class NumberConverter implements Converter
     private $appendEmpty = false;
 
     /**
+     * character map values.
      * @var array
      */
     private $numberStringMap = [
