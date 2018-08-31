@@ -16,9 +16,7 @@ class FactoryMethodTest extends TestCase
 {
     public function testCanNumberConverter()
     {
-        $numberFactory = new NumberFactory();
-        $numberConverter = $numberFactory->createConverter(5);
-
-        $this->assertInstanceOf(NumberConverter::class, $numberConverter);
+        $numberFactory = new NumberFactory(5);
+        $this->assertInstanceOf(NumberConverter::class, $numberFactory->createConverter());
     }
 }

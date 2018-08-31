@@ -14,5 +14,5 @@ interface ConverterFactory
      * @param null $data
      * @return Converter
      */
-    public function createConverter($data=NULL): Converter;
+    public function createConverter(): Converter;
 }

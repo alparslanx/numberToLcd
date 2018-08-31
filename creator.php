@@ -12,6 +12,6 @@ if(PHP_SAPI !== 'cli')
 
 $number = isset($argv[1]) ? $argv[1] : die($c('Please send a number. Example: php worker.php 135')->white()->bold()->highlight('red') . PHP_EOL);
 
-$numberFactory = new NumberFactory();
-$converter = $numberFactory->createConverter($number);
+$numberFactory = new NumberFactory($number);
+$converter = $numberFactory->createConverter();
 echo $converter->transformer();
