@@ -1,5 +1,5 @@
 <?php
-use Factory\NumberFactory;
+use App\NumberConverter;
 use Colors\Color;
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -12,6 +12,4 @@ if(PHP_SAPI !== 'cli')
 
 $number = isset($argv[1]) ? $argv[1] : die($c('Please send a number. Example: php worker.php 135')->white()->bold()->highlight('red') . PHP_EOL);
 
-$numberFactory = new NumberFactory($number);
-$converter = $numberFactory->createConverter();
-echo $converter->transformer();
+echo NumberConverter::transformer($number);

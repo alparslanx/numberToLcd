@@ -6,154 +6,100 @@
  * Time: 23:28
  */
 
-namespace Factory;
+namespace App;
 
-class NumberConverter implements Converter
+class NumberConverter
 {
     /**
-     * @var string
+     * @var array
      */
-    private $number;
-
-    /**
-     * @var string
-     */
-    public $firstLne, $secondLine, $thirdLine;
+    public static $lines = [];
 
     /**
      * character map of numbers.
      * @var array
      */
-    private $numberMap = [
+    private static $numberMap = [
         0   =>  [
-            [0,1,0],
-            [2,0,2],
-            [2,1,2]
+            ['.','_','.'],
+            ['|','.','|'],
+            ['|','_','|']
         ],
         1   =>  [
-            [0,0,0],
-            [0,0,2],
-            [0,0,2]
+            ['.','.','.'],
+            ['.','.','|'],
+            ['.','.','|']
         ],
         2   =>  [
-            [0,1,0],
-            [0,1,2],
-            [2,1,0]
+            ['.','_','.'],
+            ['.','_','|'],
+            ['|','_','.']
         ],
         3   =>  [
-            [0,1,0],
-            [0,1,2],
-            [0,1,2]
+            ['.','_','.'],
+            ['.','_','|'],
+            ['.','_','|']
         ],
         4   =>  [
-            [0,0,0],
-            [2,1,2],
-            [0,0,2]
+            ['.','.','.'],
+            ['|','_','|'],
+            ['.','.','|']
         ],
         5   =>  [
-            [0,1,0],
-            [2,1,0],
-            [0,1,2]
+            ['.','_','.'],
+            ['|','_','.'],
+            ['.','_','|']
         ],
         6   =>  [
-            [0,1,0],
-            [2,1,0],
-            [2,1,2]
+            ['.','_','.'],
+            ['|','_','.'],
+            ['|','_','|']
         ],
         7   =>  [
-            [0,1,0],
-            [0,0,2],
-            [0,0,2]
+            ['.','_','.'],
+            ['.','.','|'],
+            ['.','.','|']
         ],
         8   =>  [
-            [0,1,0],
-            [2,1,2],
-            [2,1,2]
+            ['.','_','.'],
+            ['|','_','|'],
+            ['|','_','|']
         ],
         9   =>  [
-            [0,1,0],
-            [2,1,2],
-            [0,0,2]
+            ['.','_','.'],
+            ['|','_','|'],
+            ['.','.','|']
         ]
     ];
 
-    /**
-     * @var bool|int
-     */
-    private $appendEmpty = false;
 
     /**
-     * character map values.
-     * @var array
-     */
-    private $numberStringMap = [
-        '.',
-        '_',
-        '|'
-    ];
-
-    /**
-     * NumberConverter constructor.
-     * @param null $number
-     * @throws \Exception
-     */
-    public function __construct($number=NULL){
-        if(!is_numeric($number)){
-            throw new \Exception("Please enter the number.");
-        }
-        $this->number = (string)$number;
-        $this->appendEmpty = strlen($this->number) > 1 ? 1 : 0;
-    }
-
-    /**
-     * Numbers prepare for string translation and combine results.
+     * @param number $number
      * @return string
      */
-    public function transformer()
+    public static function transformer($number)
     {
-        for($i=0; $i<=strlen($this->number)-1; $i++){
-            $this->firstLine($this->number[$i]);
-            $this->secondLine($this->number[$i]);
-            $this->thirdLine($this->number[$i]);
+        $number = (string)$number;
+        self::$lines = [];
+        if(!ctype_digit($number)){
+            throw new \InvalidArgumentException("The value you set must consist only of digits. Example: 1234");
         }
-        return $this->firstLne."\n".$this->secondLine."\n".$this->thirdLine;
-    }
 
-    /**
-     * Create first line.
-     * @param $number
-     */
-    private function firstLine($number){
-        $this->firstLne .= $this->convertNumber($number,0);
-    }
-
-    /**
-     * Create second line.
-     * @param $number
-     */
-    private function secondLine($number){
-        $this->secondLine .= $this->convertNumber($number,1);
-    }
-
-    /**
-     * Create third line.
-     * @param $number
-     */
-    private function thirdLine($number){
-        $this->thirdLine .= $this->convertNumber($number,2);
-    }
-
-    /**
-     * Convert numbers to string.
-     * @param $number
-     * @param $line
-     * @return string
-     */
-    private function convertNumber($number,$line){
-        $numberToString = '';
-        foreach($this->numberMap[$number][$line] as $item){
-            $numberToString .= $this->numberStringMap[$item];
+        for($i=0; $i<=strlen($number)-1; $i++){
+            self::lines($number[$i],0);
+            self::lines($number[$i],1);
+            self::lines($number[$i],2);
         }
-        return $numberToString.($this->appendEmpty  ? '   ' : '');
+        return implode("\n",self::$lines);
+    }
+
+    /**
+     * @param int $number
+     * @param int $line
+     */
+    private static function lines($number,$line=0){
+        self::$lines[$line] .= self::$numberMap[$number][$line][0];
+        self::$lines[$line] .= self::$numberMap[$number][$line][1];
+        self::$lines[$line] .= self::$numberMap[$number][$line][2]."    ";
     }
 }
